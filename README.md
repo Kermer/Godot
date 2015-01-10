@@ -3,4 +3,4 @@
 ----  
   
 * [Tutorials](Tutorials Home)  
-* ~[Demos](Demos Home)~
+* ~~[Demos](Demos Home)~~
