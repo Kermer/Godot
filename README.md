@@ -1,5 +1,5 @@
 # Personal repository for Godot related stuff  
   
   
-* [Tutorials](Tutorials Home)  
-* ~~[Demos](Demos Home)~~
+  
+  [Go to wiki Home](Home)
