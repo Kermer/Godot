@@ -2,4 +2,4 @@
   
   
   
-  [Go to wiki Home](Home)
+  [Go to wiki Home](https://github.com/Kermer/Godot/wiki/Home)
