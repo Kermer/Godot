@@ -1,4 +1,5 @@
 # Inaccurate type retrieval by inspecting string made of given value
+# Written before I realized that there is a typeof() function
 
 func getType( val ):
 	if val == null:
