@@ -11,7 +11,7 @@ func get_shape_points( body = self, shape_id = 0, global_pos = true ):
 		pos = Vector2(0,0)
 	
 	var shape = body.get_shape( shape_id )
-	print(shape.get_import_metadata())
+#	print(shape.get_import_metadata())
 	var shape_pos = body.get_shape_transform( shape_id ).get_origin()
 	var rot = body.get_shape_transform( shape_id ).get_rotation() + body.get_rot()
 	pos = pos + shape_pos
