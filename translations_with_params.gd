@@ -9,3 +9,4 @@ func get_string( key, params=Array() ):
 		string = string.replace(str("%",i),str(params[i]))
 	
 	return string
+
