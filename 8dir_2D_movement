@@ -1,0 +1,14 @@
+# Simple, short 8-direction movement
+
+extends KinematicBody2D
+
+var speed = 150
+var move_actions = { "ui_left":Vector2(-1,0), "ui_right":Vector2(1,0), "ui_up":Vector2(0,-1), "ui_down":Vector2(0,1) }
+
+func _fixed_process(delta):
+	var dir = Vector2(0,0)
+	for ac in move_actions:
+		if Input.is_action_pressed(ac):
+			dir += move_actions[ac]
+	
+	move(dir.normalized() * speed * delta)
