@@ -6,7 +6,7 @@ var panel = null
 #var panel_visible = false
 
 func get_name():
-	return "InteractiveTut Test"
+	return "Cave Generator"
 
 func _enter_tree():
 	button = Button.new()
