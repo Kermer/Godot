@@ -1,0 +1,411 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="generator.gd" type="Script" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "tool\nextends Node\n\nfunc _ready():\n\tget_node(\"Value\").connect(\"value_changed\",self,\"_value_changed\")\n\tget_node(\"Slider\").connect(\"value_changed\",self,\"_value_changed\")\n\nfunc _value_changed(nval): # update 2nd node if 1 got changed\n\tif get_node(\"Value\").get_val() != nval:\n\t\tget_node(\"Value\").set_val(nval)\n\tif get_node(\"Slider\").get_val() != nval:\n\t\tget_node(\"Slider\").set_val(nval)"
+
+[sub_resource type="GDScript" id=2]
+
+script/source = "tool\nextends Panel\n\nvar map = RawArray()\nvar size = Vector2()\nconst MARGIN = Vector2(20,20)\n\nfunc _ready():\n\tget_node(\"BClose\").connect(\"pressed\",self,\"hide\")\n\tconnect(\"visibility_changed\",self,\"_vis_changed\")\n\n# load map\nfunc set_map( new_map, new_size ):\n\tif typeof(new_map) != TYPE_ARRAY or typeof(size) != TYPE_VECTOR2:\n\t\treturn FAILED\n\tmap = new_map\n\tsize = new_size\n\treturn OK\n\n# draw map preview\nfunc _draw():\n\tif map.size() < 9 or size.x < 3 or size.y < 3:\n\t\treturn\n\t\n\tvar own_size = get_size()\n\tvar max_size = Vector2()\n\tmax_size.x = (own_size.x - MARGIN.x*2) / size.x # (300 - 40) / size.x\n\tmax_size.y = (own_size.y - MARGIN.y*2) / size.y # (300 - 40) / size.y\n\t\n\tvar rect_size = min(max_size.x,max_size.y) # Biggest possible squares to fit preview window\n\tvar pos = MARGIN # start at (20,20)\n\tvar rect = Rect2(pos,Vector2(rect_size,rect_size))\n\t\n\tfor y in range(size.y):\n\t\tfor x in range(size.x):\n\t\t\tvar i = y * size.x + x\n\t\t\tif map[i] == 1: # if tile is wall\n\t\t\t\trect.pos = pos + Vector2(x*rect_size, y*rect_size) # set the pos\n\t\t\t\tdraw_rect(rect,Color(1,1,1,0.8)) # draw it\n\n# when .hide/.show is used:\nfunc _vis_changed():\n\tif is_visible():\n\t\tget_node(\"../BSmooth\").set_text(\"Smooth\")\n\telse:\n\t\tget_node(\"../BSmooth\").set_text(\"Preview\")\n"
+
+[sub_resource type="GDScript" id=3]
+
+script/source = "tool\nextends Label\n\nvar max_id = -1\n\nfunc _ready():\n\tget_node(\"ID\").connect(\"value_changed\",self,\"_val_changed\")\n\t_val_changed()\n\nfunc _val_changed(nval = get_node(\"ID\").get_value()):\n\tvar label = get_node(\"Label\")\n\tlabel.show()\n\tif nval == -1:\n\t\tlabel.set_text(\"(Empty)\")\n\telif nval > max_id:\n\t\tlabel.set_text(\"ID Not Existing\?\")\n\telse:\n\t\tlabel.hide()"
+
+[node name="Panel" type="Panel"]
+
+margin/right = 300
+margin/bottom = 400
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+script/script = ExtResource( 1 )
+__meta__ = { "__editor_plugin_screen__":"2D", "__editor_plugin_states__":{ "2D":{ "ofs":Vector2( -307.827, -170.354 ), "snap_grid":true, "snap_offset":Vector2( 0, 0 ), "snap_pixel":false, "snap_relative":false, "snap_rotation":false, "snap_rotation_offset":0, "snap_rotation_step":0.261799, "snap_show_grid":true, "snap_step":Vector2( 10, 10 ), "zoom":1.10803 }, "3D":{ "ambient_light_color":Color( 0.15, 0.15, 0.15, 1 ), "default_light":true, "default_srgb":false, "deflight_rot_x":0.942478, "deflight_rot_y":0.628319, "fov":45, "show_grid":true, "show_origin":true, "viewport_mode":1, "viewports":[ { "distance":4, "listener":true, "pos":Vector3( 0, 0, 0 ), "use_environment":false, "use_orthogonal":false, "x_rot":0, "y_rot":0 }, { "distance":4, "listener":false, "pos":Vector3( 0, 0, 0 ), "use_environment":false, "use_orthogonal":false, "x_rot":0, "y_rot":0 }, { "distance":4, "listener":false, "pos":Vector3( 0, 0, 0 ), "use_environment":false, "use_orthogonal":false, "x_rot":0, "y_rot":0 }, { "distance":4, "listener":false, "pos":Vector3( 0, 0, 0 ), "use_environment":false, "use_orthogonal":false, "x_rot":0, "y_rot":0 } ], "zfar":500, "znear":0.1 }, "Anim":{ "visible":false } }, "__editor_run_settings__":{ "custom_args":"-l $scene", "run_mode":0 } }
+
+[node name="Title" type="Label" parent="."]
+
+margin/left = 20
+margin/top = 10
+margin/right = 280
+margin/bottom = 30
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+text = "TileMap Cave Generator"
+align = 1
+valign = 1
+percent_visible = 1
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Size" type="Label" parent="."]
+
+margin/left = 20
+margin/top = 50
+margin/right = 110
+margin/bottom = 70
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+text = "Size:"
+valign = 1
+percent_visible = 1
+lines_skipped = 0
+max_lines_visible = -1
+__meta__ = { "_editor_collapsed":true }
+
+[node name="X" type="SpinBox" parent="Size"]
+
+margin/left = 90
+margin/top = -1
+margin/right = 160
+margin/bottom = 22
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+range/min = 3
+range/max = 1000
+range/step = 1
+range/page = 0
+range/value = 30
+range/exp_edit = false
+rounded_values = true
+editable = true
+prefix = ""
+suffix = ""
+
+[node name="Y" type="SpinBox" parent="Size"]
+
+margin/left = 188
+margin/top = -1
+margin/right = 260
+margin/bottom = 22
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+range/min = 3
+range/max = 1000
+range/step = 1
+range/page = 0
+range/value = 30
+range/exp_edit = false
+rounded_values = true
+editable = true
+prefix = ""
+suffix = ""
+
+[node name="Fill" type="Label" parent="."]
+
+margin/left = 20
+margin/top = 90
+margin/right = 110
+margin/bottom = 110
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+text = "Fill Percent: "
+valign = 1
+percent_visible = 1
+lines_skipped = 0
+max_lines_visible = -1
+script/script = SubResource( 1 )
+__meta__ = { "_editor_collapsed":true }
+
+[node name="Value" type="SpinBox" parent="Fill"]
+
+margin/left = 188
+margin/top = -1
+margin/right = 260
+margin/bottom = 22
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+range/min = 0
+range/max = 100
+range/step = 1
+range/page = 0
+range/value = 50
+range/exp_edit = false
+rounded_values = true
+editable = true
+prefix = ""
+suffix = "%"
+
+[node name="Slider" type="HSlider" parent="Fill"]
+
+margin/top = 30
+margin/right = 260
+margin/bottom = 46
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+range/min = 0
+range/max = 100
+range/step = 1
+range/page = 0
+range/value = 50
+range/exp_edit = false
+rounded_values = true
+tick_count = 0
+ticks_on_borders = false
+
+[node name="BGenerate" type="Button" parent="."]
+
+margin/left = 20
+margin/top = 160
+margin/right = 130
+margin/bottom = 190
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+toggle_mode = false
+text = "Generate"
+flat = false
+
+[node name="BSmooth" type="Button" parent="."]
+
+margin/left = 170
+margin/top = 160
+margin/right = 280
+margin/bottom = 190
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+toggle_mode = false
+text = "Preview"
+flat = false
+
+[node name="BRollback" type="Button" parent="."]
+
+margin/left = 20
+margin/top = 200
+margin/right = 130
+margin/bottom = 230
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+disabled = true
+toggle_mode = false
+text = "Rollback"
+flat = false
+
+[node name="Path" type="Label" parent="."]
+
+margin/left = 20
+margin/top = 250
+margin/right = 110
+margin/bottom = 270
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+text = "TileMap Path:"
+valign = 1
+percent_visible = 1
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="LineEdit" type="LineEdit" parent="Path"]
+
+margin/left = 90
+margin/top = -1
+margin/right = 260
+margin/bottom = 22
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+text = ""
+max_length = 0
+editable = true
+secret = false
+
+[node name="Label" type="Label" parent="Path"]
+
+margin/left = 90
+margin/top = 20
+margin/right = 260
+margin/bottom = 40
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+text = "( null )"
+align = 1
+valign = 1
+percent_visible = 1
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="BExport" type="Button" parent="."]
+
+margin/left = 80
+margin/top = 350
+margin/right = 220
+margin/bottom = 390
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+disabled = true
+toggle_mode = false
+text = "Export to TileMap"
+flat = false
+
+[node name="BClose" type="Button" parent="."]
+
+margin/left = 278
+margin/top = -2
+margin/right = 302
+margin/bottom = 22
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+toggle_mode = false
+text = "X"
+flat = false
+
+[node name="Preview" type="Panel" parent="."]
+
+visibility/visible = false
+margin/left = 320
+margin/right = 620
+margin/bottom = 300
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+script/script = SubResource( 2 )
+__meta__ = { "_editor_collapsed":true }
+
+[node name="BClose" type="Button" parent="Preview"]
+
+margin/left = 278
+margin/top = -2
+margin/right = 302
+margin/bottom = 22
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+toggle_mode = false
+text = "X"
+flat = false
+
+[node name="EmptyTile" type="Label" parent="."]
+
+margin/left = 20
+margin/top = 290
+margin/right = 110
+margin/bottom = 310
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+text = "Empty Tile ID:"
+valign = 1
+percent_visible = 1
+lines_skipped = 0
+max_lines_visible = -1
+script/script = SubResource( 3 )
+__meta__ = { "_editor_collapsed":true }
+
+[node name="ID" type="SpinBox" parent="EmptyTile"]
+
+margin/left = 180
+margin/top = -1
+margin/right = 250
+margin/bottom = 22
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+range/min = -1
+range/max = 1000
+range/step = 1
+range/page = 0
+range/value = -1
+range/exp_edit = false
+rounded_values = true
+editable = true
+prefix = ""
+suffix = ""
+
+[node name="Label" type="Label" parent="EmptyTile"]
+
+visibility/self_opacity = 0.6
+margin/left = 84
+margin/right = 174
+margin/bottom = 20
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+text = "ID Not Existing\?"
+align = 1
+valign = 1
+percent_visible = 1
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="WallTile" type="Label" parent="."]
+
+margin/left = 20
+margin/top = 320
+margin/right = 110
+margin/bottom = 340
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+text = "Wall Tile ID:"
+valign = 1
+percent_visible = 1
+lines_skipped = 0
+max_lines_visible = -1
+script/script = SubResource( 3 )
+__meta__ = { "_editor_collapsed":true }
+
+[node name="ID" type="SpinBox" parent="WallTile"]
+
+margin/left = 180
+margin/top = -1
+margin/right = 250
+margin/bottom = 22
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+range/min = -1
+range/max = 1000
+range/step = 1
+range/page = 0
+range/value = -0
+range/exp_edit = false
+rounded_values = true
+editable = true
+prefix = ""
+suffix = ""
+
+[node name="Label" type="Label" parent="WallTile"]
+
+visibility/self_opacity = 0.6
+margin/left = 84
+margin/right = 177
+margin/bottom = 20
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+text = "ID Not Existing\?"
+align = 1
+valign = 1
+percent_visible = 1
+lines_skipped = 0
+max_lines_visible = -1
+
+
