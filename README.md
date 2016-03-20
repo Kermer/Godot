@@ -1,7 +1,7 @@
-# Code Snippets
+## Code Snippets
 Be sure to check them out. You never know what you can find there ;)
 
-# Tutorials  
+## Tutorials  
 **[Official Godot tutorials](http://docs.godotengine.org/en/latest/#sec-tutorials)**  
   
 And here some tutorials created most likely by me...  
@@ -14,8 +14,10 @@ And here some tutorials created most likely by me...
 * [Connection ( TCP )](https://github.com/Kermer/Godot/tree/master/Tutorials/tut_tcp_connection.md)  
 * [Data transfer ( TCP )](https://github.com/Kermer/Godot/tree/master/Tutorials/tut_tcp_data_transfer.md)   
   
-# Demos  
-  
-* [Simple Collisions](https://drive.google.com/open?id=0Bz_8S_euQkQVUk92VDRKQTByTzA&authuser=0) (completed tutorial)  
-* [Connection ( TCP )](https://drive.google.com/open?id=0Bz_8S_euQkQVY1Z1cFhkT1F0RlE&authuser=0) (completed tutorial)  
+## Other Repos
+* [SteamAPI](https://github.com/Kermer/GodotSteam) - SteamAPI [module](http://docs.godotengine.org/en/latest/reference/custom_modules_in_c++.html#modules) in diapers
+* [Sidescroller Ground Edit](https://github.com/UgisBrekis/Godot-resources/tree/master/Sidescroller_ground_edit) - really useful
+* [Awesome Godot](https://github.com/Calinou/awesome-godot#awesome-godot-) - list of useful plugins, scripts, modules and more!
+* Android Admob ([Mavhod's](https://github.com/Mavhod/GodotAdmob) or [blubee's](https://github.com/teamblubee/bbAdmob)) - [module](http://docs.godotengine.org/en/latest/reference/custom_modules_in_c++.html#modules) for displaying ads on mobile devices
+* 
   
