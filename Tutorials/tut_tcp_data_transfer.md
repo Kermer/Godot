@@ -101,7 +101,7 @@ Export, run in few windows and test it.
 # Gaming needs...  
 _This tutorial isn't about creating whole game, just adding networking for basic interactions._  
   
-I was wondering for a while from what kind of game I want this tutorial to be made. Finally picked [Theo's Multiplayer sample](http://www.godotengine.org/forum/viewtopic.php?f=14&t=565).  
+I was wondering for a while from what kind of game I want this tutorial to be made. Finally picked [Theo's Multiplayer sample](http://forum.godotdevelopers.org/index.php?topic=2491#msg2491).  
 In his example (there's source code download) you can see usage of server with client as child schema. For server you use main.gd script and some of character.gd and for client character.gd, main.gd gets loaded, but you barely use it.  
 Server -> main.gd + character.gd, client -> ~~main.gd~~ + character.gd.  
   
