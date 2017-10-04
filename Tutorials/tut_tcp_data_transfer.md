@@ -27,7 +27,7 @@ What do we want to do:
   
 First add `LineEdit` nodes to both of your server and client scenes and resize, position it as you see fit  
   
-![Adding LineEdit](http://i133.photobucket.com/albums/q50/95seba/Godot%20Tutorials/addinglineedit.png)  
+![Adding LineEdit](https://imgur.com/3h5stXW.png)  
   
 ### Server  
 First we going to start with receiving data - all data we receive will be just a simple string. Get to your `_process` function and modify `for peer in peerstream:` code:
@@ -139,7 +139,7 @@ I'm going to show you how to use the last method.
   
 Create new script and save it as `net_constants.gd`  
   
-![script](http://i133.photobucket.com/albums/q50/95seba/Godot%20Tutorials/script.png)  
+![script](https://imgur.com/CanqCaF.png)  
   
   
 Now add this code to it:  

@@ -54,7 +54,7 @@ Have in mind that CollisionShape2D cannot be accessed as node through code (get_
 It works the same as CollisionShape2D, but instead of picking one of shapes you can draw your own.  
 To start drawing polygon select your CollisionPolygon2D node, then click pencil tool in the editor:  
   
-![Drawing Polygon](http://i133.photobucket.com/albums/q50/95seba/Godot%20Tutorials/draw_poly.png)
+![Drawing Polygon](https://imgur.com/ktSPn2V.png)
   
   
 # Make some collisions!  
@@ -67,7 +67,7 @@ I've decided that for this tutorial we don't need any extra resources (we'll use
 To Sprite assign `icon.png` texture and create `New RectangleShape2D` for CollisionShape2D.  
 `Edit Shape` extents so it matches the Sprite.  
   
-![New RectangleShape2D](http://i133.photobucket.com/albums/q50/95seba/Godot%20Tutorials/create_newshape.png) ![Edit Shape](http://i133.photobucket.com/albums/q50/95seba/Godot%20Tutorials/editnewshape.png)  
+![New RectangleShape2D](https://imgur.com/TJdskpy.png) ![Edit Shape](https://imgur.com/kXKAahX.png)  
   
 You've created your first colliding object! But how do you want to collide if there is only one object?  
 Create `StaticBody2D` and `Area2D` same way as you created KinematicBody2D.  
@@ -120,7 +120,7 @@ move_to( some_pos )
 ````  
   
 It's mostly because of distance between points - at first example you check collision about each 1 pixel ( 100 * delta ), but in second example it might be much bigger distance. Here's difference between move(and move_to) and set_pos functions:
-![](http://i133.photobucket.com/albums/q50/95seba/Godot%20Tutorials/collision_image.png)  
+![](https://imgur.com/OUQVgdM.png)  
   
 ### Collision detection  
 Now you are able to move your character and collide with your StaticBody. But usually this isn't enough, you need to something happen on collision and here comes `is_colliding()` function and `body_enter`, `body_exit` signals.  
