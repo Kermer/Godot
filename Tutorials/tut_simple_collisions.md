@@ -39,7 +39,7 @@ NOT IMPLEMENTED IN THIS TUTORIAL
 
 ### CollisionShape2D
 [CollisionShape2D](http://docs.godotengine.org/en/latest/tutorials/2d/physics_introduction.html#shapes) is required for any CollisionObject to work (to check for collisions). Every CollisionObject can have multiple Shapes which can be created either via GUI editor - as a child of CollisionObject or via code, f.e.:
-````python
+```gdscript
 #create a circle
 var c = CircleShape2D.new()
 c.set_radius(20)
@@ -47,7 +47,7 @@ c.set_radius(20)
 #create a box
 var b = RectangleShape2D.new()
 b.set_extents(Vector2(20,10))
-````  
+```  
 Have in mind that CollisionShape2D cannot be accessed as node through code (get_node won't work). If you really need to get your shape you can use `get_shape( shape_index )` function, it'll return Shape2D object.  
 
 ### CollisionPolygon2D
@@ -75,18 +75,18 @@ Position your objects inside the scene with some space between each other.
 You might want to add some Labels or modulate Sprite colors to know who is who.  
   
 Now we need to move something, we'll use our KinematicBody2D for it. Create new GDScript to it and start editing it:  
-````python
+```gdscript
 extends KinematicBody2D
 
 const speed = 100
 
 func _ready():
 	set_fixed_process(true)
-````  
+```  
 If you don't know what is `fixed_process` or why we use it here - in short it's close to `process` but have fixed delta (fires once per frame) related to GPU physics processing. So when using collisions it's better to use fixed_process instead of normal.  
 Add another part of the code...  
   
-````python
+```gdscript
 func _fixed_process(delta):
 	var direction = Vector2(0,0)
 	if ( Input.is_action_pressed("ui_up") ):
@@ -99,13 +99,13 @@ func _fixed_process(delta):
 		direction += Vector2(1,0)
 	
 	move( direction * speed * delta)
-````  
+```  
   
 Now your character will be able to move! It'll move 100 (speed value) pixels per second into direction specified by input.  
   
 `move` function is really not just about movement (it's more like set_pos job) - it's **TRYING TO MOVE** your object to wanted position but if collision appears it'll stop its movement and try to free itself (move to non-colliding position), `move_to()` function works the same way.  
   
-````python
+```gdscript
 set_pos( get_pos() + direction * speed * delta )
 move( Vector2(0,0) )
   # PROBABLY will work the same as
@@ -117,7 +117,7 @@ set_pos( some_pos )
 move( Vector2(0,0) )
   # MIGHT work the same as
 move_to( some_pos )
-````  
+```  
   
 It's mostly because of distance between points - at first example you check collision about each 1 pixel ( 100 * delta ), but in second example it might be much bigger distance. Here's difference between move(and move_to) and set_pos functions:
 ![](https://imgur.com/OUQVgdM.png)  
@@ -125,23 +125,23 @@ It's mostly because of distance between points - at first example you check coll
 ### Collision detection  
 Now you are able to move your character and collide with your StaticBody. But usually this isn't enough, you need to something happen on collision and here comes `is_colliding()` function and `body_enter`, `body_exit` signals.  
   
-````python
+```gdscript
 func _fixed_process(delta):
 # [ ... previous code ... ]
 	if is_colliding():	# colliding with Static, Kinematic, Rigid
 		# do something
 		print ("Collision with ", get_collider() )	# get_collider() returns CollisionObject
-````  
+```  
 Now your KinematicBody will run some code when you're trying to enter your StaticBody. But Area2D doesn't seem to do anything yet. You need to connect it's signal to some function. You can do that either via Editor's GUI or via code:  
   
-````python
+```gdscript
 func _ready():
 # [ ... rest of your code ... ]
 	get_node("Area2D").connect("body_enter",self,"_on_Area2D_body_enter")
 	get_node("Area2D").connect("body_exit",self,"_on_Area2D_body_exit")
-````  
+```  
   
-````python
+```gdscript
 func _on_Area2D_body_enter( body ):
 	print("Entered Area2D with body ", body)
 func _on_Area2D_body_exit( body ):
@@ -154,14 +154,14 @@ Now run your scene and test collisions!
 Note that when you are colliding you are unable to move in other directions (f.e. when colliding at bottom, you can't move left/right). To continue movement Godot includes some useful functions: `slide()` and `get_collision_normal()`.  
 Lets modify our code now...  
   
-````python
+```gdscript
 func _fixed_process( delta ):
 # [ ... your code ... ]
 	if is_colliding():
 		var n = get_collision_normal()
 		direction = n.slide( direction )
 		move(direction*speed*delta)
-````  
+```  
   
 Run your scene again. Noticed the difference?  
   
