@@ -31,31 +31,31 @@ First add `LineEdit` nodes to both of your server and client scenes and resize, 
   
 ### Server  
 First we going to start with receiving data - all data we receive will be just a simple string. Get to your `_process` function and modify `for peer in peerstream:` code:
-````python
+```gdscript
 for peer in peerstream:
 	if peer.get_available_packet_count() > 0: # we received some data
 		var data_received = peer.get_var()
 		debug.add_text("Data: "+data_received); debug.newline() # we don't use str() here since we're sure it'll be string
 		SendData( data_received ) # our data broadcast function, we'll create it soon
-````  
+```  
 This code is enough for our needs in this project (sending message). But in more advanced game you might send more than 1 packets per one _process frame. And with this code it might cause delay between receiving message ( since we're only able to receive 1 packet / frame with this code), but it's easy to fix:  
-````python
+```gdscript
 for peer in peerstream:
 	if peer.get_available_packet_count() > 0: # we received some data
 		for i in range( peer.get_available_packet_count() ): # this is our fix
 			# [...]
-````  
+```  
 No need to add it here, but you can if you want.  
   
 Our broadcast data function:
-````python
+```gdscript
 func SendData( data ):
 	if data != "": # no point in sending nothing
 		for peer in peerstream: # simple loop for all connected clients
 			peer.put_var( data ) # sending data for each
-````  
+```  
 We can now receive data and then broadcast to others, it's time to allow ourselves to send messages:  
-````python
+```gdscript
 func _process( delta ): # you might as well add this in _input
 # [ ... rest of your code ]
 	if Input.is_key_pressed( KEY_RETURN ): # Enter
@@ -65,13 +65,13 @@ func _process( delta ): # you might as well add this in _input
 			debug.add_text("Data: "+data); debug.newline() # display for self
 			SendData( data ) # send to others
 			get_node("LineEdit").set_text("") # reset our message
-````  
+```  
   
 Now our server is done.  
   
 ### Client  
 Most of client's functions looks similiar to those from server, you mainly just skip for loops since you're only contacting with server, no one else.  
-````python
+```gdscript
 func _process( delta ):
 	if peerstream.get_available_packet_count() > 0: # we received some data
 		var data_received = peerstream.get_var()
@@ -84,12 +84,12 @@ func _process( delta ):
 			SendData( data ) # send to server
 			get_node("LineEdit").set_text("")
 			# we don't display for ourselves, waiting till server send us message
-````  
-````python
+```  
+```gdscript
 func SendData( data ):
 	if data != "":
 		peerstream.put_var( data )
-````
+```
 ### It is done...  
 Export, run in few windows and test it.  
   
@@ -143,7 +143,7 @@ Create new script and save it as `net_constants.gd`
   
   
 Now add this code to it:  
-````python
+```gdscript
 extends Node
 
 const PLAYER_CONNECT = 0
@@ -151,14 +151,14 @@ const PLAYER_DISCONNECT = 1
 const PLAYER_DATA = 2
 const NAME_TAKEN = 3
 const MESSAGE = 4
-````  
+```  
 And save it.  
 Now just in your server and client scripts instead of `extends Node` line write `extends "res://net_constants.gd"`. Now you can freely use your constants without referencing to any other object.  
   
 ### Requesting spawn  
 Our code notify us know when some player has connected, but it doesn't do anything else... yet.  
 First thing what we want to do is spawning our player (well in this tutorial at least). But before we spawn it, it would be nice to know his name, so lets prepare for first data from player.  
-````python
+```gdscript
 #SERVER
 func _process( delta ):
 # [...]
@@ -201,10 +201,10 @@ func SendConnect( client ):
 		
 		data.append( connection[cl].player.name ) # add other clients names
 	connection[ client ].peer.put_var( data ) # send that data to connecting client
-````  
+```  
   
 With this code, when player send us PLAYER_CONNECT (we will add it to client soon) we will spawn new player at our scene, send request to other clients to spawn him and to connecting player we'll send list of currently connected players (so he can spawn them). Lets add something to client now:  
-```` python
+```gdscript
 # CLIENT
 func _ready():
 # [...]
@@ -219,9 +219,9 @@ func _process( delta ):
 			# [ .. rest of the code .. ]
 			peer.put_var( [ PLAYER_CONNECT, player.name ] ) # send our name to server
 			return # end this _process run
-````  
+```  
 This will send our name to server when we successfully connect to server. Now lets handle data which server sends to us:  
-````python
+```gdscript
 func _process( delta ):
 # instead of peer.get_available_packet_count()
 	if peer.get_available_packet_count() > 0:
@@ -238,7 +238,7 @@ func _process( delta ):
 					new_player.name = name
 					add_child(new_player)
 					clones[ name ] = new_player # add to our dictionary { "name":Player.instance() }
-````  
+```  
 Now when you connect new player should be spawned at 0,0 pos.  
 Keep in mind that currently our code can't handle multiple players with the same name ( MAYBE will show you how to fix it later ), so having players with same name might cause some bugs.  
   
@@ -248,7 +248,7 @@ Now we're going to transfer characters positions and animations between server a
 I've intentionally skipped disconnection handling, because we'll use player "Quit" animation for that.  
   
 Lets start with the movement. Before we send all players positions to all connected clients we first need to have those positions, so lets start with client:  
-````python
+```gdscript
 func _process():
 # [...]
 			var data = peer.get_var()
@@ -269,10 +269,10 @@ func _process():
 		var pos = player.get_pos()
 		peer.put_var( [ PLAYER_DATA, int(pos.x), int(pos.y), player.anim ] ) # int uses less bandwidth than float and we wont notice difference
 		# currently we spam server every _process run
-````  
+```  
   
 Handling data by server and broadcasting to others:  
-````python
+```gdscript
 # SERVER
 func _process():
 # [...]
@@ -294,23 +294,23 @@ func BroadcastData():
 	
 	for client in connection:
 		connection[client].peer.put_var( data ) # send data
-````  
+```  
   
 Now you should be able to move and see movement of everyone.  
   
 ### One last thing  
 Our disconnecting. We've got our `Quit()` function in our player.gd which is triggered when "Quit" animation ends playing, so this kind of makes things even easier. All we need to do is to send our clients "Quit" animation for disconnecting player.  
 Change this code:  
-````python
+```gdscript
 		if !client.is_connected(): # maybe not connected anymore?
 			print("Client disconnected "+str(client.get_status()))
 			if connection[client].player: # if he have character spawned
 				connection[client].player.queue_free() # delete it
 			connection.erase(client) # remove him from dictionary
 			continue # skip this run of loop / go to next element in loop
-````  
+```  
 To this:  
-````python
+```gdscript
 		if !client.is_connected(): # maybe not connected anymore?
 			print("Client disconnected "+str(client.get_status()))
 			if connection[client].player: # if he have character spawned
@@ -322,7 +322,7 @@ To this:
 				connection[client].player.anim = "Quit"
 			connection.erase(client) # remove him from dictionary
 			continue # skip this run of loop / go to next element in loop
-````  
+```  
   
 ***  
   
