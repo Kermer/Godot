@@ -12,17 +12,17 @@ At first I need you to download [pre-configured scene](https://drive.google.com/
 Done downloading? Lets open it. I've made 3 scenes: `main_scene` (is here to load other two), `server` and `client`. For server and client I've added node "Debug" for printing in "game" window instead of debug window.  
   
 We will start with opening `server.gd` script, first thing we want to do is creating our server object:  
-````python
+````gdscript
 func _ready():
 	debug = get_node("Debug")
 	server = TCP_Server.new()
 ```
 and then we pick which port we want to listen:
-````python
+```gdscript
 	server.listen( port ) # 3560
 ````  
 If `server.listen` returns something else than 0 that means there was some error, most likely something else on your PC is using this port. To avoid creating server to which people can't connect you should change that line to this code:
-````python
+````gdscript
 	if server.listen( port ) == 0:
 		debug.add_text( "Server started on port "+str(port) ); debug.newline()
 		set_process( true )
@@ -31,7 +31,7 @@ If `server.listen` returns something else than 0 that means there was some error
 ````
 Now you will know if your server has started.  
 Next part is handling connection:
-````python
+````gdscript
 func _process( delta ):
 	if server.is_connection_available(): # check if someone's trying to connect
 		var client = server.take_connection() # accept connection
@@ -42,7 +42,7 @@ func _process( delta ):
 		debug.add_text( "Client has connected!" ); debug.newline()
 ````  
 And handling client disconnect:
-````python
+````gdscript
 func _process( delta ):
 # [ ... previous code ... ]
 	for client in connection:
@@ -56,13 +56,13 @@ func _process( delta ):
   
 ## Client  
 Server looks ready for connections now. Lets start making our client. For server we had `TCP_Server` object and for client we need `StreamPeerTCP` object, so open `client.gd` script and add it:  
-````python
+````gdscript
 func _ready():
 	debug = get_node("Debug")
 	connection = StreamPeerTCP.new()
 ````
 Now lets connect and check if we have succeeded:
-````python
+````gdscript
 func _ready():
 # [ ... previous code ... ]
 	connection.connect( ip, port )
@@ -81,7 +81,7 @@ func _ready():
 When connecting to your own PC via any local IP( f.e. 127.0.0.1 ) and maybe (haven't tested yet) some LAN PC, `get_status()` in _ready() function will return `STATUS_CONNECTED`, but when you try to connect via network (even to your own IP) it'll return `STATUS_CONNECTING` because it didn't received reply instantly but after few (or more) miliseconds, so after _ready() function ended.  
   
 **So now we process...**
-````python
+````gdscript
 func _process( delta ):
 	if !connected: # it's inside _process, so if last status was STATUS_CONNECTING
 		if connection.get_status() == connection.STATUS_CONNECTED:
@@ -103,14 +103,14 @@ If you tested this program you might have noticed that connection works fine, bu
 Why? Code so far is good. Everything works as it suppose to.  
   
 I don't know if it work like that for some reason, but I know how to fix it. You just need to make some use of your peerstreams:
-````python
+````gdscript
 # Server
 func _process( delta ):
 # [ ... rest of the code ... ]
 	for peer in peerstream:
 		peer.get_available_packet_count()
 ````
-````python
+````gdscript
 # Client
 func _ready():
 # Anywhere after  connection.connect( ip, port )
