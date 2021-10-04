@@ -1,5 +1,5 @@
-# Note
-This tutorial was made around the times of Godot 2, which means that there may be a better ways of doing things now (e.g RPC for networking).
+## Note
+Tutorials were made around the times of Godot 2, which means that there may be a better ways of doing things now (e.g RPC for networking).
 
 ## Code Snippets
 Be sure to check them out. You never know what you can find there ;)
