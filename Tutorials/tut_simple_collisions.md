@@ -167,4 +167,4 @@ Run your scene again. Noticed the difference?
   
 ### Demo (finished tutorial)
   
-[CLICK TO DOWNLOAD DEMO](https://drive.google.com/open?id=0Bz_8S_euQkQVUk92VDRKQTByTzA&authuser=0)
+[CLICK TO DOWNLOAD DEMO](https://drive.google.com/file/d/0Bz_8S_euQkQVUk92VDRKQTByTzA/view?usp=sharing&resourcekey=0-cjiOOxJGwqR4FfsIeUq50Q)

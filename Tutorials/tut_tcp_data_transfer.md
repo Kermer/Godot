@@ -15,7 +15,7 @@ After reading first element of array receiver can decide what to do next.
 Some people prefer to make _client as client.scn_ and _server as server.scn with child client.scn_ to use share some functions, variables etc. with client, yet I'm going to use client as client and server as server schema here.
   
 ## Modifying last tutorial  
-_We'll add posibility to send messages for [last tutorial](https://github.com/Kermer/Godot/tree/master/Tutorials/tut_tcp_connection.md) ( [link to completed tutorial](https://drive.google.com/open?id=0Bz_8S_euQkQVY1Z1cFhkT1F0RlE&authuser=0) ).  
+_We'll add posibility to send messages for [last tutorial](https://github.com/Kermer/Godot/tree/master/Tutorials/tut_tcp_connection.md) ( [link to completed tutorial](https://drive.google.com/file/d/0Bz_8S_euQkQVY1Z1cFhkT1F0RlE/view?usp=sharing&resourcekey=0-haPv_KstEdLPOqmdMePGGA) ).  
 [You can skip this if you want since I'm going to show something more useful when creating games.](https://github.com/Kermer/Godot/tree/master/Tutorials/tut_tcp_data_transfer.md#gaming-needs)_
   
 ***
@@ -113,7 +113,7 @@ More by server: more secure against cheaters, hackers, etc. (unless they're host
 More by client: less secure, decreases server load, client might be less laggy ...  
   
 ## Shall we begin?  
-First I need you to download and open [this project](https://drive.google.com/open?id=0Bz_8S_euQkQVMzBaUDdWTG93QUk&authuser=0).  
+First I need you to download and open [this project](https://drive.google.com/file/d/0Bz_8S_euQkQVMzBaUDdWTG93QUk/view?usp=sharing&resourcekey=0-N-IzNWQxM2VNk1qdpSWTOg).  
 If you run it now you'll be able to move your own character, connect/disconnect, but no data will be transfered between server and client.  
   
 You might have noticed that scripts used here are similiar to those from my [previous tutorial](tut_connection), with some small changes:
@@ -338,5 +338,5 @@ To Theo for his Multiplayer Sample (links removed, since old forum is gone).
   
 ## Downloads  
   
-[Tutorial](https://drive.google.com/open?id=0Bz_8S_euQkQVMzBaUDdWTG93QUk&authuser=0)  
-[Completed Tutorial](https://drive.google.com/open?id=0Bz_8S_euQkQVNkNHU1dqY2FLVlU&authuser=0)
+[Tutorial](https://drive.google.com/file/d/0Bz_8S_euQkQVMzBaUDdWTG93QUk/view?usp=sharing&resourcekey=0-N-IzNWQxM2VNk1qdpSWTOg)  
+[Completed Tutorial](https://drive.google.com/file/d/0Bz_8S_euQkQVNkNHU1dqY2FLVlU/view?usp=sharing&resourcekey=0-BTxQVdPmNQkFbIpqf1TwkA)

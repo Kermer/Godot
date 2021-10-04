@@ -7,7 +7,7 @@ If you still want to make game which will use network you're welcome to read thi
   
 ## Server  
   
-At first I need you to download [pre-configured scene](https://drive.google.com/open?id=0Bz_8S_euQkQVZGxHbjkwOTdLSVk&authuser=0) so we can save some time creating nodes and focus on the code.  
+At first I need you to download [pre-configured scene](https://drive.google.com/file/d/0Bz_8S_euQkQVZGxHbjkwOTdLSVk/view?usp=sharing&resourcekey=0-o34ZBLGbT0CsrwVnETnQcA) so we can save some time creating nodes and focus on the code.  
   
 Done downloading? Lets open it. I've made 3 scenes: `main_scene` (is here to load other two), `server` and `client`. For server and client I've added node "Debug" for printing in "game" window instead of debug window.  
   
@@ -130,6 +130,6 @@ I'll say more about `PacketPeerStream` and data transfering in my [TCP Data Tran
   
 ### Downloads  
   
-[Tutorial - empty](https://drive.google.com/open?id=0Bz_8S_euQkQVZGxHbjkwOTdLSVk&authuser=0)  
+[Tutorial - empty](https://drive.google.com/file/d/0Bz_8S_euQkQVZGxHbjkwOTdLSVk/view?usp=sharing&resourcekey=0-o34ZBLGbT0CsrwVnETnQcA)  
   
-[Tutorial - completed](https://drive.google.com/open?id=0Bz_8S_euQkQVY1Z1cFhkT1F0RlE&authuser=0)
+[Tutorial - completed](https://drive.google.com/file/d/0Bz_8S_euQkQVY1Z1cFhkT1F0RlE/view?usp=sharing&resourcekey=0-haPv_KstEdLPOqmdMePGGA)
